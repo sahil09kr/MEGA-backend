@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import connectDB from "./db/index.js";
-
+import { app } from './app.js';
 
 
 // dotenv.config({
@@ -10,6 +10,14 @@ import connectDB from "./db/index.js";
 // })
 
 connectDB()
+.then(()=>{
+    app.listen(process.env.PORT || 8000, ()=>{
+        console.log(`Server listening on ${process.env.PORT}`);
+    })
+
+}).catch((error)=>{
+    console.log(`MONGODB CONNECTION FAILED`,error);
+})
 
 
 /*
@@ -37,5 +45,10 @@ const app=express()
   "scripts": {
     "dev": "nodemon -r dotenv/config--experimental-json-modules src/index.js"
   },
+
+  nodemon → Automatically restarts the server when files change.
+-r dotenv/config → Preloads dotenv to load environment variables from .env.
+--experimental-json-modules → Enables support for importing .json files in ES modules (type: "module" in package.json).
+src/index.js → Starts your server from index.js.
 */
  
